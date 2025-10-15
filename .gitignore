@@ -53,6 +53,7 @@ logs/
 # API keys and secrets
 secrets.json
 config/secrets.py
+config/proxies.txt
 
 # Jupyter Notebook
 .ipynb_checkpoints
