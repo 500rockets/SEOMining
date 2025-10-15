@@ -1,0 +1,119 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: seo-mining-postgres
+    environment:
+      POSTGRES_USER: seo_user
+      POSTGRES_PASSWORD: seo_password
+      POSTGRES_DB: seo_mining
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U seo_user -d seo_mining"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis (for Celery broker)
+  redis:
+    image: redis:7-alpine
+    container_name: seo-mining-redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # FastAPI Backend
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      # For Windows with GPU, use Dockerfile.gpu
+      # dockerfile: Dockerfile.gpu
+    container_name: seo-mining-backend
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app/app
+      - ./data:/app/data
+      - ./output:/app/output
+      - ./config:/app/config
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    # Uncomment for Windows GPU support
+    # runtime: nvidia
+    # environment:
+    #   - NVIDIA_VISIBLE_DEVICES=all
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+
+  # Celery Worker
+  celery-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      # For Windows with GPU, use Dockerfile.gpu
+      # dockerfile: Dockerfile.gpu
+    container_name: seo-mining-celery-worker
+    command: celery -A app.celery_app worker --loglevel=info --concurrency=3
+    volumes:
+      - ./app:/app/app
+      - ./data:/app/data
+      - ./output:/app/output
+      - ./config:/app/config
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    # Uncomment for Windows GPU support
+    # runtime: nvidia
+    # environment:
+    #   - NVIDIA_VISIBLE_DEVICES=all
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+
+  # Flower (Celery Monitoring)
+  flower:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: seo-mining-flower
+    command: celery -A app.celery_app flower --port=5555
+    ports:
+      - "5555:5555"
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - celery-worker
+
+volumes:
+  postgres_data:
+
