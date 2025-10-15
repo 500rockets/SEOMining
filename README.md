@@ -21,8 +21,10 @@ See `/Plan/SEOMiningPlan.md` for the detailed implementation roadmap.
 - **ValueSerp Integration**: Fetch top 10 search results for any keyword
 - **Intelligent Crawling**: Spider and store competitor pages locally through 50 rotating proxies
 - **No Direct Connections**: All requests routed through proxy pool for anonymity and rate limit avoidance
+- **Configurable Storage**: Full control over where data is saved - supports absolute paths, relative paths, and environment variables
+- **Organized File Structure**: Automatic organization by project and keyword with separate raw/processed/reports directories
 - **GPU-Accelerated Analysis**: Leverage CUDA for fast semantic embedding generation
-- **Docker Containerized**: Consistent deployment across environments
+- **Docker Containerized**: Consistent deployment across environments with volume mapping
 - **Semantic Comparison**: Compare your content against top-ranking pages
 - **Iterative Optimization**: Test content changes and measure improvements
 
@@ -44,6 +46,7 @@ SEO Mining/
 │   ├── Architecture.md        # System architecture
 │   ├── Implementation_Phases.md # Development roadmap
 │   ├── Proxy_Strategy.md      # Proxy pool management
+│   ├── Storage_Configuration.md # Storage & file organization
 │   └── ValueSerp_API_Documentation.md # API integration details
 ├── config/                    # Configuration files
 │   └── proxies.txt            # 50 proxy addresses (not committed)

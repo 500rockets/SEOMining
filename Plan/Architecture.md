@@ -47,18 +47,43 @@ This project uses semantic analysis to compare your page against top-ranking sea
 
 **Storage Format**:
 ```
-data/
-├── raw/
-│   ├── keyword-slug/
-│   │   ├── metadata.json          # Search results metadata
-│   │   ├── competitor_1.html       # Full HTML
-│   │   ├── competitor_1_text.txt   # Extracted text
-│   │   └── ...
-├── processed/
-│   └── keyword-slug/
-│       ├── embeddings.pkl          # Generated embeddings
-│       └── analysis.json           # Comparison results
+{BASE_DATA_DIR}/
+├── projects/
+│   └── {project_name}/
+│       └── {keyword_slug}/
+│           ├── raw/
+│           │   ├── metadata.json
+│           │   ├── search_results.json
+│           │   ├── competitor_1.html
+│           │   ├── competitor_1_text.txt
+│           │   └── ...
+│           ├── processed/
+│           │   ├── embeddings.pkl
+│           │   ├── similarity_matrix.json
+│           │   └── analysis_results.json
+│           ├── reports/
+│           │   ├── similarity_report.html
+│           │   ├── wordcloud.png
+│           │   └── recommendations.txt
+│           └── iterations/
+│               ├── iteration_1/
+│               └── iteration_2/
+├── cache/
+│   ├── models/
+│   └── proxies/
+├── exports/
+│   ├── csv/
+│   ├── json/
+│   └── excel/
+└── archive/
 ```
+
+**Storage Configuration**:
+- **Fully Configurable**: Set base directory via `BASE_DATA_DIR` environment variable
+- **Flexible Paths**: Support absolute, relative, and environment variable paths
+- **Cross-Platform**: Works on Windows, Mac, Linux
+- **Project Organization**: Each project/keyword gets isolated directory structure
+- **See**: `Plan/Storage_Configuration.md` for complete details
 
 ### 3. Text Extraction & Preprocessing
 **Goals**:

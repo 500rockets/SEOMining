@@ -35,11 +35,15 @@
    - [ ] Support concurrent fetching (10+ simultaneous)
 
 5. **Storage Layer**
-   - [ ] Create storage utilities (`utils/storage.py`)
-   - [ ] Implement file system structure
-   - [ ] Save raw HTML files
-   - [ ] Save metadata JSON files
-   - [ ] Add cache checking logic
+   - [ ] Create storage manager (`utils/storage.py`)
+   - [ ] Implement configurable base directory (supports absolute/relative paths)
+   - [ ] Create organized directory structure (projects/keyword/raw/processed/reports)
+   - [ ] Add path resolution with environment variable expansion
+   - [ ] Implement save methods for all file types (HTML, text, JSON, embeddings)
+   - [ ] Add project listing and summary functions
+   - [ ] Support custom storage locations per data type
+   - [ ] Add cache directory management
+   - [ ] Implement export directory structure
 
 6. **Text Extraction**
    - [ ] Create text extractor (`analyze/text_extractor.py`)
