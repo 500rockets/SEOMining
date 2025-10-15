@@ -22,8 +22,8 @@ beautifulsoup4==4.12.3
 lxml==5.1.0
 
 # Embeddings & ML (CPU/GPU compatible)
-sentence-transformers==2.3.1
-torch==2.1.2
+sentence-transformers==2.5.1
+torch==2.2.0
 numpy==1.26.3
 scikit-learn==1.4.0
 hdbscan==0.8.33

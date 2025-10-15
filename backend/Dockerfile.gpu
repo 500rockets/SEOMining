@@ -1,6 +1,10 @@
 # Dockerfile for GPU support (Windows with NVIDIA)
 FROM nvidia/cuda:12.1.0-runtime-ubuntu22.04
 
+# Prevent interactive prompts during build
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=UTC
+
 WORKDIR /app
 
 # Install Python 3.11
@@ -28,7 +32,7 @@ RUN python -m pip install --upgrade pip
 COPY requirements.txt .
 
 # Install PyTorch with CUDA support
-RUN pip install --no-cache-dir torch==2.1.2 --index-url https://download.pytorch.org/whl/cu121
+RUN pip install --no-cache-dir torch==2.2.0 --index-url https://download.pytorch.org/whl/cu121
 
 # Install other Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt

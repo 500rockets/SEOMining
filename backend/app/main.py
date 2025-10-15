@@ -72,10 +72,26 @@ async def root():
 
 @app.get("/health")
 async def health_check():
-    """Health check endpoint"""
-    return {
+    """Health check endpoint with GPU detection"""
+    health_status = {
         "status": "healthy",
-        "database": "connected",  # TODO: Add actual DB check
-        "redis": "connected",  # TODO: Add actual Redis check
+        "database": "connected",  # TODO: Add actual DB check in Phase 2
+        "redis": "connected",  # TODO: Add actual Redis check in Phase 2
     }
+    
+    # Check GPU availability
+    try:
+        import torch
+        health_status["gpu_available"] = torch.cuda.is_available()
+        if torch.cuda.is_available():
+            health_status["gpu_count"] = torch.cuda.device_count()
+            health_status["gpu_devices"] = [
+                torch.cuda.get_device_name(i) 
+                for i in range(torch.cuda.device_count())
+            ]
+    except Exception as e:
+        health_status["gpu_available"] = False
+        health_status["gpu_error"] = str(e)
+    
+    return health_status
 

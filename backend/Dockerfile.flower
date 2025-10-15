@@ -1,0 +1,25 @@
+# Lightweight Dockerfile for Flower (no GPU/ML needed)
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy minimal requirements
+COPY requirements-flower.txt .
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements-flower.txt
+
+# Copy application code (for env file access)
+COPY . .
+
+# Expose port
+EXPOSE 5555
+
+# Default command (overridden in docker-compose.yml)
+CMD ["celery", "-A", "app.celery_app", "flower", "--port=5555"]
+

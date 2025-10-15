@@ -35,9 +35,8 @@ services:
   backend:
     build:
       context: .
-      dockerfile: Dockerfile
-      # For Windows with GPU, use Dockerfile.gpu
-      # dockerfile: Dockerfile.gpu
+      dockerfile: Dockerfile.gpu
+      # For CPU-only (Mac/Linux dev), use: dockerfile: Dockerfile
     container_name: seo-mining-backend
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     ports:
@@ -54,27 +53,26 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    # Uncomment for Windows GPU support
-    # runtime: nvidia
-    # environment:
-    #   - NVIDIA_VISIBLE_DEVICES=all
-    # deploy:
-    #   resources:
-    #     reservations:
-    #       devices:
-    #         - driver: nvidia
-    #           count: 1
-    #           capabilities: [gpu]
+    # Windows GPU support (2x RTX 4000)
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 2  # Use both GPUs
+              capabilities: [gpu]
 
   # Celery Worker
   celery-worker:
     build:
       context: .
-      dockerfile: Dockerfile
-      # For Windows with GPU, use Dockerfile.gpu
-      # dockerfile: Dockerfile.gpu
+      dockerfile: Dockerfile.gpu
+      # For CPU-only (Mac/Linux dev), use: dockerfile: Dockerfile
     container_name: seo-mining-celery-worker
-    command: celery -A app.celery_app worker --loglevel=info --concurrency=3
+    command: celery -A app.celery_app worker --loglevel=info --concurrency=4
     volumes:
       - ./app:/app/app
       - ./data:/app/data
@@ -87,23 +85,23 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    # Uncomment for Windows GPU support
-    # runtime: nvidia
-    # environment:
-    #   - NVIDIA_VISIBLE_DEVICES=all
-    # deploy:
-    #   resources:
-    #     reservations:
-    #       devices:
-    #         - driver: nvidia
-    #           count: 1
-    #           capabilities: [gpu]
+    # Windows GPU support (2x RTX 4000)
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 2  # Use both GPUs
+              capabilities: [gpu]
 
   # Flower (Celery Monitoring)
   flower:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.flower
     container_name: seo-mining-flower
     command: celery -A app.celery_app flower --port=5555
     ports:

@@ -1,0 +1,15 @@
+# Minimal requirements for Flower (Celery monitoring UI)
+# Flower doesn't need ML libraries but needs app dependencies
+
+# Task Queue
+celery==5.3.6
+redis==5.0.1
+flower==2.0.1
+
+# Config dependencies (needed for app.celery_app import)
+pydantic==2.5.3
+pydantic-settings==2.1.0
+
+# Utilities
+python-dotenv==1.0.0
+

@@ -90,15 +90,41 @@ SEO Mining/
 ## Installation
 
 ### Prerequisites
-- Python 3.9+
 - Docker Desktop (for containerized deployment)
-- NVIDIA GPU + CUDA drivers (optional, for GPU acceleration)
+- NVIDIA GPU + CUDA drivers (for GPU acceleration)
 - ValueSerp API key
+- Windows 10/11 (current setup) or Mac/Linux
 
-### Quick Start
-1. Clone the repository
-2. Copy `.env.example` to `.env` and add your ValueSerp API key
-3. See `Plan/Implementation_Phases.md` for detailed setup instructions
+### Quick Start (Windows)
+
+**Option 1: Automated Setup (Recommended)**
+```powershell
+# Run the setup script
+.\start-windows.ps1
+```
+
+**Option 2: Manual Setup**
+1. Start Docker Desktop
+2. Copy `.env` configuration:
+   ```powershell
+   cd backend
+   copy config.example.env .env
+   # Edit .env and add your ValueSerp API key
+   ```
+3. Start all services:
+   ```powershell
+   docker-compose up -d --build
+   ```
+4. Run database migrations:
+   ```powershell
+   docker-compose exec backend alembic upgrade head
+   ```
+5. Test the API:
+   ```powershell
+   curl http://localhost:8000/health
+   ```
+
+For detailed GPU setup instructions, see `WINDOWS_GPU_SETUP.md`
 
 ## License
 
