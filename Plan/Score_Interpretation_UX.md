@@ -37,6 +37,83 @@ Alignment Score: 0.78 / 1.00
 
 ## Complete Score Interpretation System
 
+### Competitor Benchmarking (Critical Context)
+
+**Magic-SEO Update (Jan 2025):** Added competitor benchmark scoring to provide competitive context for all metrics.
+
+Every score now includes comparison to competitors:
+
+```python
+{
+    "your_score": 0.72,
+    "competitor_benchmarks": {
+        "avg_alignment": 0.78,        # Average competitor score
+        "max_alignment": 0.92,        # Best competitor
+        "min_alignment": 0.65,        # Weakest competitor
+        "top_25_percentile": 0.85,    # 75th percentile threshold
+        "competitor_count": 10,
+        "your_percentile": 45         # You rank in 45th percentile
+    },
+    "interpretation": {
+        "vs_average": "7.7% below average (↓)",
+        "vs_top_25": "15.3% below top performers",
+        "action": "Aim for 0.78+ to match average, 0.85+ to beat top 25%"
+    }
+}
+```
+
+**Visual Example:**
+
+```
+Your Alignment Score: 0.72 / 1.00 (C+)
+
+Competitive Landscape:
+┌──────────────────────────────────────────────────────────┐
+│                                                          │
+│  Min    Your     Avg      Top 25%    Max                │
+│  0.65    0.72    0.78      0.85     0.92                │
+│   ●───────●───────●─────────●────────●                  │
+│           ↑                                              │
+│      You're here (45th percentile)                       │
+│                                                          │
+│  To reach average: +0.06 (add 1-2 sections)             │
+│  To reach top 25%: +0.13 (add 2-3 sections + optimize)  │
+└──────────────────────────────────────────────────────────┘
+
+Gap Analysis:
+├─ vs Weakest Competitor: +0.07 (You're ahead)
+├─ vs Average Competitor: -0.06 (↓ You're 7.7% behind)
+├─ vs Top 25% Threshold: -0.13 (↓ Gap to competitive)
+└─ vs Best Competitor: -0.20 (↓ Gap to #1)
+
+Interpretation:
+"You're in the middle of the pack (45th percentile). Most competitors 
+have better semantic alignment. Focus on closing the gap to average 
+(0.78) first, then aim for top 25% (0.85+)."
+
+Action Priority:
+1. Add 2 missing topic sections → +0.06 → Reaches average
+2. Optimize existing content depth → +0.07 → Reaches top 25%
+```
+
+**Why This Matters:**
+- **Answers "Is 0.72 good?"** → "No, it's below average (0.78)"
+- **Sets realistic targets** → "Aim for 0.78 first, then 0.85"
+- **Shows competitive gaps** → "You're 7.7% behind competitors"
+- **Identifies weak competitors** → "2 competitors score below you (opportunities)"
+
+**Applied to All Scores:**
+- Alignment Score
+- Coverage Score
+- Structural Coherence
+- Metadata Alignment
+- Hierarchical Decomposition
+- Thematic Unity
+- Balance Score
+- Query Intent Match
+
+---
+
 ### Overall Composite Score
 
 ```json

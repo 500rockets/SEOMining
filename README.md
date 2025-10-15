@@ -32,12 +32,27 @@ See `/Plan/SEOMiningPlan.md` for the detailed implementation roadmap.
 
 ## Technology Stack
 
-- **Search API**: ValueSerp
-- **Crawling**: Custom scraper + SEO Screaming Frog integration
-- **Embeddings**: Sentence Transformers (BERT-based models)
-- **GPU Support**: NVIDIA CUDA via Docker
-- **Storage**: Local file system + optional database
+### Core Services
+- **Search API**: ValueSerp (SERP data)
+- **Crawling**: Custom scraper + SEO Screaming Frog + Browserbase
+- **Proxies**: 50 rotating proxies (no direct connections)
+- **AI**: OpenAI GPT-5 (keyword extraction), OpenAI embeddings
+
+### Backend Infrastructure
+- **Database**: PostgreSQL (job/result persistence)
+- **Job Queue**: Celery + Redis (background task processing)
+- **Monitoring**: Flower (Celery monitoring UI)
+- **Migrations**: Alembic (database schema management)
+
+### Analysis & ML
+- **Embeddings**: Sentence Transformers (BERT-based), OpenAI embeddings
+- **Clustering**: HDBSCAN, scikit-learn
+- **GPU Support**: NVIDIA CUDA via Docker (optional local embeddings)
+
+### Deployment
 - **Container**: Docker with GPU passthrough
+- **Orchestration**: docker-compose (PostgreSQL + Redis + Backend + Celery Worker + Flower)
+- **Storage**: Configurable local filesystem (absolute/relative/env var paths)
 
 ## Project Structure
 

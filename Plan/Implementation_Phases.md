@@ -1,5 +1,12 @@
 # Implementation Phases
 
+> **Note (Jan 2025):** Magic-SEO received major updates that we can leverage. See `Plan/Magic_SEO_Updates_Analysis.md` for details.
+> - **Reusing**: Database schema, Celery job queue, GPT-5 keyword extraction, competitor benchmarking, CSV generation
+> - **Building Custom**: 50-proxy infrastructure, structural coherence scoring, hashing/optimization engine
+> - **Time Savings**: ~4.5 weeks (~30% faster overall)
+
+---
+
 ## Phase 1: Foundation & Data Collection
 **Goal**: Get search results and store competitor pages locally
 
