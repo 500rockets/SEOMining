@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import structlog
 
 from app.core.config import settings
-from app.api.routes import analysis, embeddings
+from app.api.routes import analysis, embeddings, scoring, full_analysis
 
 # Configure structured logging
 structlog.configure(
@@ -46,6 +46,8 @@ app.add_middleware(
 # Include routers
 app.include_router(analysis.router, prefix="/api/v1", tags=["analysis"])
 app.include_router(embeddings.router, prefix="/api/v1", tags=["embeddings"])
+app.include_router(scoring.router, prefix="/api/v1", tags=["scoring"])
+app.include_router(full_analysis.router, prefix="/api/v1", tags=["full-analysis"])
 
 
 @app.on_event("startup")
