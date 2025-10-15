@@ -7,9 +7,15 @@ ENV TZ=UTC
 
 WORKDIR /app
 
-# Install Python 3.11
+# Install Python 3.11 and system dependencies
 RUN apt-get update && apt-get install -y \
     software-properties-common \
+    wget \
+    ca-certificates \
+    fonts-liberation \
+    libnss3 \
+    libxss1 \
+    libxtst6 \
     && add-apt-repository ppa:deadsnakes/ppa \
     && apt-get update && apt-get install -y \
     python3.11 \
@@ -36,6 +42,10 @@ RUN pip install --no-cache-dir torch==2.2.0 --index-url https://download.pytorch
 
 # Install other Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Install Playwright browsers
+RUN playwright install chromium && \
+    playwright install-deps chromium
 
 # Copy application code
 COPY . .

@@ -1,32 +1,13 @@
 """
-Scraping services for SEO Mining.
-
-Provides web scraping infrastructure:
-- Page fetching with retry logic
-- Text extraction from HTML
-- Proxy management (50 rotating proxies)
-- Rate limiting and health monitoring
+Scraping Service Package
+Web content extraction with proxy rotation and JavaScript rendering
 """
+from .service import ScrapingService, get_scraping_service
+from .proxy_manager import ProxyManager, load_proxies_from_file
 
-import logging
-
-logger = logging.getLogger(__name__)
-
-__all__ = ['PageFetcher', 'TextExtractor', 'ProxyManager']
-
-
-# Placeholder classes for Phase 2 implementation
-class PageFetcher:
-    """TODO: Implement in Phase 2"""
-    pass
-
-
-class TextExtractor:
-    """TODO: Implement in Phase 2"""
-    pass
-
-
-class ProxyManager:
-    """TODO: Implement in Phase 2"""
-    pass
-
+__all__ = [
+    'ScrapingService',
+    'get_scraping_service',
+    'ProxyManager',
+    'load_proxies_from_file',
+]

@@ -20,6 +20,9 @@ httpx==0.26.0
 trafilatura==1.6.3
 beautifulsoup4==4.12.3
 lxml==5.1.0
+playwright==1.40.0
+extruct==0.13.0
+w3lib==2.1.0
 
 # Embeddings & ML (CPU/GPU compatible)
 sentence-transformers==2.5.1
