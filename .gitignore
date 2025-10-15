@@ -46,6 +46,9 @@ data/
 output/
 cache/
 
+# Reference projects (for analysis only, not part of main codebase)
+reference_projects/
+
 # Logs
 *.log
 logs/
