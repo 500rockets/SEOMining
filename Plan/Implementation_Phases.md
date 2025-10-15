@@ -56,8 +56,8 @@
 
 ---
 
-## Phase 2: Semantic Analysis (CPU First)
-**Goal**: Generate embeddings and compare semantic similarity
+## Phase 2: Semantic Analysis & Structural Coherence (CPU First)
+**Goal**: Generate embeddings, compare semantic similarity, and measure structural quality
 
 ### Tasks:
 1. **Embedding Generation**
@@ -80,13 +80,25 @@
    - [ ] Calculate average competitor similarity
    - [ ] Identify gaps in your content
 
-4. **Reporting**
-   - [ ] Create report generator (`report/generator.py`)
-   - [ ] Generate text-based similarity report
-   - [ ] Create CSV export of scores
-   - [ ] Add basic recommendations
+4. **Structural Coherence Scoring** (NEW - Critical Addition)
+   - [ ] Create structural coherence service (`analyze/structural_coherence.py`)
+   - [ ] Implement metadata alignment scorer (title/desc vs content)
+   - [ ] Implement structural hygiene scorer (H1, meta desc, title length)
+   - [ ] Implement hierarchical decomposition scorer (H1→H2→H3 logic)
+   - [ ] Implement thematic unity scorer (all sections support main topic)
+   - [ ] Implement balance scorer (section sizing, H2 density)
+   - [ ] Implement query intent matcher (structure matches query type)
+   - [ ] Calculate composite structural coherence score
 
-**Deliverable**: Working similarity analysis with text-based reports
+5. **Reporting**
+   - [ ] Create report generator (`report/generator.py`)
+   - [ ] Generate similarity report (Magic-SEO style)
+   - [ ] Add structural coherence report (NEW)
+   - [ ] Compare structural quality vs competitors
+   - [ ] Create CSV export of all scores
+   - [ ] Add actionable recommendations (content + structure)
+
+**Deliverable**: Working similarity + structural quality analysis with comprehensive reports
 
 ---
 
@@ -215,12 +227,126 @@
 
 ---
 
+---
+
+## NEW: Phase 2.5 - Analysis Engine (Critical Bridge)
+**Goal**: Interpret scores and generate actionable improvement plans
+
+### Tasks:
+1. **Score Interpretation Engine**
+   - [ ] Implement threshold-based score interpretation
+   - [ ] Create score tier system (excellent/good/fair/poor)
+   - [ ] Add component-specific thresholds
+   
+2. **Diagnostic Pattern Recognition**
+   - [ ] Implement diagnostic decision tree
+   - [ ] Detect patterns (high coverage/low alignment, etc.)
+   - [ ] Root cause analysis for each pattern
+   
+3. **Prioritization System**
+   - [ ] Calculate priority scores (impact × correlation × ease)
+   - [ ] Rank improvements by ROI
+   - [ ] Generate improvement thresholds
+   
+4. **Action Plan Generator**
+   - [ ] Generate quick wins list
+   - [ ] Generate strategic improvements list
+   - [ ] Generate major rewrite recommendations
+   - [ ] Estimate time and expected improvement for each
+   
+5. **Gap-to-Action Translator**
+   - [ ] Convert missing topics to H2 suggestions
+   - [ ] Convert structural issues to specific fixes
+   - [ ] Convert alignment gaps to rewrite recommendations
+
+**Deliverable**: Automated action plan generator that tells users exactly what to do
+
+---
+
+## Phase 7: Word-Level Optimization Engine
+**Goal**: Fine-tune content at word/phrase level for maximum relevance
+
+### Tasks:
+1. **Candidate Generation**
+   - [ ] Extract related keywords from competitor embeddings
+   - [ ] Generate natural insertion points for keywords
+   - [ ] Identify removable filler words
+   - [ ] Generate alternative phrasings for sentences
+   
+2. **Optimization Loop**
+   - [ ] Test word additions (keyword insertion)
+   - [ ] Test word removals (fluff reduction)
+   - [ ] Test phrase replacements
+   - [ ] Calculate embedding for each candidate
+   - [ ] Keep changes that improve similarity ≥ 1%
+   
+3. **Verification System**
+   - [ ] Check keyword density (≤3%)
+   - [ ] Verify readability maintained
+   - [ ] Check natural language flow
+   - [ ] Grammar verification
+   - [ ] Component score stability check
+   
+4. **Iterative Refinement**
+   - [ ] Implement optimization loop (max 100 iterations)
+   - [ ] Track change history
+   - [ ] Revert changes that don't help
+   - [ ] Stop when no improvements ≥ threshold
+
+**Deliverable**: Automated word-level optimizer that fine-tunes content
+
+---
+
+## Phase 8: Verification & Monitoring
+**Goal**: Verify improvements and track long-term results
+
+### Tasks:
+1. **Verification Engine**
+   - [ ] Re-calculate all scores post-optimization
+   - [ ] Verify target improvement achieved
+   - [ ] Check no component degraded
+   - [ ] Generate verification report
+   
+2. **A/B Testing Framework** (Optional)
+   - [ ] Create test plan generator
+   - [ ] Implement traffic splitting logic
+   - [ ] Track metrics (CTR, position, bounce rate)
+   - [ ] Statistical significance testing
+   
+3. **Monitoring Dashboard**
+   - [ ] Track score history over time
+   - [ ] Monitor ranking changes
+   - [ ] Track organic traffic/CTR
+   - [ ] Alert on score drops
+   
+4. **Continuous Improvement**
+   - [ ] Re-analyze quarterly
+   - [ ] Detect when competitors improve
+   - [ ] Suggest re-optimization triggers
+
+**Deliverable**: Complete verification and monitoring system
+
+---
+
 ## Quick Start Recommendations
 
-**Start with Phase 1, Tasks 1-3**:
-1. Set up the environment
-2. Get ValueSerp working
-3. Successfully fetch and save pages
+**Start with Phase 1, Tasks 1-5**:
+1. Set up the environment and storage
+2. Get ValueSerp working with your API key
+3. Implement proxy manager for your 50 proxies
+4. Successfully fetch and save pages through proxies
+5. Test end-to-end: keyword → SERP → scrape → store
 
-This gives you immediate value and lets you verify the API is working correctly before building more complex features.
+This gives you immediate value and lets you verify the entire data collection pipeline before building analysis features.
+
+**Then Phase 2, Tasks 1-4**:
+6. Get embeddings working (start with OpenAI for speed)
+7. Implement clustering (copy from Magic-SEO)
+8. Calculate similarity scores
+9. Implement structural coherence scoring
+
+**Then Phase 2.5 (NEW - Critical)**:
+10. Build analysis engine to interpret scores
+11. Generate action plans automatically
+12. This is where the magic happens - turning data into decisions!
 

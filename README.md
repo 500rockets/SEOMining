@@ -26,6 +26,8 @@ See `/Plan/SEOMiningPlan.md` for the detailed implementation roadmap.
 - **GPU-Accelerated Analysis**: Leverage CUDA for fast semantic embedding generation
 - **Docker Containerized**: Consistent deployment across environments with volume mapping
 - **Semantic Comparison**: Compare your content against top-ranking pages
+- **Structural Coherence Scoring**: Measure APA-style quality (metadata alignment, H1→H2→H3 logic, thematic unity)
+- **Query Intent Matching**: Ensure page structure matches what the query implies
 - **Iterative Optimization**: Test content changes and measure improvements
 
 ## Technology Stack
