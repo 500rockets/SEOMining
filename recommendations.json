@@ -1,0 +1,181 @@
+{
+  "query": "high quality message building",
+  "target_url": "https://500rockets.io/commzone-mtt/",
+  "total_gaps_found": 50,
+  "top_gaps": [
+    {
+      "phrase": "effective messaging",
+      "estimated_impact": 8.2,
+      "query_relevance": 63.8,
+      "competitor_usage": 4,
+      "competitor_usage_pct": 36.4,
+      "recommendation": "MEDIUM PRIORITY: Including this would improve relevance"
+    },
+    {
+      "phrase": "messaging framework",
+      "estimated_impact": 7.87,
+      "query_relevance": 60.5,
+      "competitor_usage": 4,
+      "competitor_usage_pct": 36.4,
+      "recommendation": "MEDIUM PRIORITY: Including this would improve relevance"
+    },
+    {
+      "phrase": "messaging is",
+      "estimated_impact": 7.44,
+      "query_relevance": 51.7,
+      "competitor_usage": 5,
+      "competitor_usage_pct": 45.5,
+      "recommendation": "MEDIUM PRIORITY: Including this would improve relevance"
+    },
+    {
+      "phrase": "messaging strategy",
+      "estimated_impact": 7.41,
+      "query_relevance": 60.4,
+      "competitor_usage": 3,
+      "competitor_usage_pct": 27.3,
+      "recommendation": "MEDIUM PRIORITY: Including this would improve relevance"
+    },
+    {
+      "phrase": "messaging frameworks",
+      "estimated_impact": 7.34,
+      "query_relevance": 59.8,
+      "competitor_usage": 3,
+      "competitor_usage_pct": 27.3,
+      "recommendation": "MEDIUM PRIORITY: Including this would improve relevance"
+    },
+    {
+      "phrase": "effective messaging strategy",
+      "estimated_impact": 7.27,
+      "query_relevance": 63.7,
+      "competitor_usage": 2,
+      "competitor_usage_pct": 18.2,
+      "recommendation": "MEDIUM PRIORITY: Including this would improve relevance"
+    },
+    {
+      "phrase": "successful messaging",
+      "estimated_impact": 7.24,
+      "query_relevance": 58.7,
+      "competitor_usage": 3,
+      "competitor_usage_pct": 27.3,
+      "recommendation": "MEDIUM PRIORITY: Including this would improve relevance"
+    },
+    {
+      "phrase": "messaging framework should",
+      "estimated_impact": 7.06,
+      "query_relevance": 56.9,
+      "competitor_usage": 3,
+      "competitor_usage_pct": 27.3,
+      "recommendation": "MEDIUM PRIORITY: Including this would improve relevance"
+    },
+    {
+      "phrase": "messaging and",
+      "estimated_impact": 7.05,
+      "query_relevance": 52.4,
+      "competitor_usage": 4,
+      "competitor_usage_pct": 36.4,
+      "recommendation": "MEDIUM PRIORITY: Including this would improve relevance"
+    },
+    {
+      "phrase": "message house",
+      "estimated_impact": 7.02,
+      "query_relevance": 61.1,
+      "competitor_usage": 2,
+      "competitor_usage_pct": 18.2,
+      "recommendation": "MEDIUM PRIORITY: Including this would improve relevance"
+    },
+    {
+      "phrase": "of messaging",
+      "estimated_impact": 6.95,
+      "query_relevance": 55.9,
+      "competitor_usage": 3,
+      "competitor_usage_pct": 27.3,
+      "recommendation": "MEDIUM PRIORITY: Including this would improve relevance"
+    },
+    {
+      "phrase": "messaging strategy that",
+      "estimated_impact": 6.84,
+      "query_relevance": 59.3,
+      "competitor_usage": 2,
+      "competitor_usage_pct": 18.2,
+      "recommendation": "MEDIUM PRIORITY: Including this would improve relevance"
+    },
+    {
+      "phrase": "messaging strategy:",
+      "estimated_impact": 6.8,
+      "query_relevance": 58.9,
+      "competitor_usage": 2,
+      "competitor_usage_pct": 18.2,
+      "recommendation": "MEDIUM PRIORITY: Including this would improve relevance"
+    },
+    {
+      "phrase": "of a messaging",
+      "estimated_impact": 6.7,
+      "query_relevance": 57.9,
+      "competitor_usage": 2,
+      "competitor_usage_pct": 18.2,
+      "recommendation": "MEDIUM PRIORITY: Including this would improve relevance"
+    },
+    {
+      "phrase": "messaging strategy,",
+      "estimated_impact": 6.65,
+      "query_relevance": 57.4,
+      "competitor_usage": 2,
+      "competitor_usage_pct": 18.2,
+      "recommendation": "MEDIUM PRIORITY: Including this would improve relevance"
+    },
+    {
+      "phrase": "core messaging",
+      "estimated_impact": 6.61,
+      "query_relevance": 57.0,
+      "competitor_usage": 2,
+      "competitor_usage_pct": 18.2,
+      "recommendation": "MEDIUM PRIORITY: Including this would improve relevance"
+    },
+    {
+      "phrase": "messaging framework.",
+      "estimated_impact": 6.6,
+      "query_relevance": 61.5,
+      "competitor_usage": 1,
+      "competitor_usage_pct": 9.1,
+      "recommendation": "MEDIUM PRIORITY: Including this would improve relevance"
+    },
+    {
+      "phrase": "messaging framework to",
+      "estimated_impact": 6.58,
+      "query_relevance": 56.7,
+      "competitor_usage": 2,
+      "competitor_usage_pct": 18.2,
+      "recommendation": "MEDIUM PRIORITY: Including this would improve relevance"
+    },
+    {
+      "phrase": "message is",
+      "estimated_impact": 6.56,
+      "query_relevance": 47.4,
+      "competitor_usage": 4,
+      "competitor_usage_pct": 36.4,
+      "recommendation": "MEDIUM PRIORITY: Including this would improve relevance"
+    },
+    {
+      "phrase": "message queue",
+      "estimated_impact": 6.54,
+      "query_relevance": 56.3,
+      "competitor_usage": 2,
+      "competitor_usage_pct": 18.2,
+      "recommendation": "MEDIUM PRIORITY: Including this would improve relevance"
+    }
+  ],
+  "estimated_improvement": 73.9,
+  "recommendations": [
+    "Add 'effective messaging' to improve semantic alignment (estimated +8.2 points)",
+    "Add 'messaging framework' to improve semantic alignment (estimated +7.9 points)",
+    "Add 'messaging is' to improve semantic alignment (estimated +7.4 points)",
+    "Add 'messaging strategy' to improve semantic alignment (estimated +7.4 points)",
+    "Add 'messaging frameworks' to improve semantic alignment (estimated +7.3 points)",
+    "Add 'effective messaging strategy' to improve semantic alignment (estimated +7.3 points)",
+    "Add 'successful messaging' to improve semantic alignment (estimated +7.2 points)",
+    "Add 'messaging framework should' to improve semantic alignment (estimated +7.1 points)",
+    "Add 'messaging and' to improve semantic alignment (estimated +7.0 points)",
+    "Add 'message house' to improve semantic alignment (estimated +7.0 points)"
+  ],
+  "analysis_timestamp": "2025-10-16T22:08:05.960051"
+}

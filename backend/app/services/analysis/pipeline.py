@@ -110,7 +110,7 @@ class AnalysisPipeline:
         target_score = None
         if target_url:
             logger.info("step_2a_scraping_target_url", url=target_url)
-            target_content = self.scraping_service.scrape_url(
+            target_content = await self.scraping_service.scrape_url(
                 target_url,
                 use_proxy=self.use_proxies
             )
@@ -124,7 +124,7 @@ class AnalysisPipeline:
         
         # Step 3: Scrape and analyze competitors
         logger.info("step_2b_scraping_competitors", count=len(competitor_urls))
-        competitor_contents = self.scraping_service.scrape_urls_batch(
+        competitor_contents = await self.scraping_service.scrape_urls_batch(
             competitor_urls,
             use_proxy=self.use_proxies,
             delay_between_requests=2.0

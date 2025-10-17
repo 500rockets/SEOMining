@@ -3,11 +3,14 @@ Scraping Service - Content extraction with proxy support
 Combines Trafilatura, Playwright, and proxy rotation
 """
 import time
+import asyncio
 from typing import Dict, List, Optional, Tuple
-from playwright.sync_api import sync_playwright, Page, Browser
+from playwright.async_api import async_playwright, Page, Browser
 import trafilatura
 from trafilatura.settings import use_config
 import structlog
+from bs4 import BeautifulSoup
+import re
 
 from .proxy_manager import ProxyManager
 from app.core.config import settings
@@ -51,11 +54,97 @@ class ScrapingService:
             "Chrome/120.0.0.0 Safari/537.36"
         )
         
-        # Configure Trafilatura
+        # Configure Trafilatura with robust settings
         self.trafilatura_config = use_config()
         self.trafilatura_config.set("DEFAULT", "EXTRACTION_TIMEOUT", "30")
+        self.trafilatura_config.set("DEFAULT", "MIN_EXTRACTED_SIZE", "50")
+        self.trafilatura_config.set("DEFAULT", "MIN_OUTPUT_SIZE", "100")
+        self.trafilatura_config.set("DEFAULT", "MIN_DUPLCHECK_SIZE", "50")
+        self.trafilatura_config.set("DEFAULT", "MAX_TREE_SIZE", "1000000")
+        self.trafilatura_config.set("DEFAULT", "MAX_TREE_BODY_SIZE", "1000000")
+        self.trafilatura_config.set("DEFAULT", "MAX_FILE_SIZE", "1000000")
+        # Enable more aggressive extraction
+        self.trafilatura_config.set("DEFAULT", "EXTRACTION_TIMEOUT", "60")
+        self.trafilatura_config.set("DEFAULT", "MIN_EXTRACTED_SIZE", "20")
     
-    def fetch_with_playwright(
+    def extract_content_with_beautifulsoup(self, html: str, url: str) -> Dict:
+        """
+        Robust content extraction using BeautifulSoup (fallback method)
+        Based on proven SchemaChecker configuration
+        """
+        try:
+            soup = BeautifulSoup(html, 'html.parser')
+            
+            # Remove script and style elements
+            for script in soup(["script", "style", "nav", "footer", "header"]):
+                script.decompose()
+            
+            # Extract title
+            title = ""
+            title_tag = soup.find('title')
+            if title_tag:
+                title = title_tag.get_text().strip()
+            
+            # Extract meta description
+            meta_description = ""
+            meta_desc = soup.find('meta', attrs={'name': 'description'})
+            if meta_desc:
+                meta_description = meta_desc.get('content', '').strip()
+            
+            # Extract main content - try multiple strategies
+            content_text = ""
+            
+            # Strategy 1: Look for main content areas
+            main_selectors = [
+                'main', 'article', '[role="main"]', '.content', '.main-content',
+                '.post-content', '.entry-content', '.page-content', '.article-content'
+            ]
+            
+            for selector in main_selectors:
+                main_element = soup.select_one(selector)
+                if main_element:
+                    content_text = main_element.get_text(separator=' ', strip=True)
+                    if len(content_text) > 200:  # Ensure substantial content
+                        break
+            
+            # Strategy 2: If no main content found, use body
+            if not content_text or len(content_text) < 200:
+                body = soup.find('body')
+                if body:
+                    content_text = body.get_text(separator=' ', strip=True)
+            
+            # Strategy 3: Last resort - use entire document
+            if not content_text or len(content_text) < 100:
+                content_text = soup.get_text(separator=' ', strip=True)
+            
+            # Clean up the text
+            content_text = re.sub(r'\s+', ' ', content_text)  # Normalize whitespace
+            content_text = content_text.strip()
+            
+            # Extract headings for structure
+            headings = []
+            for tag in soup.find_all(['h1', 'h2', 'h3', 'h4', 'h5', 'h6']):
+                headings.append({
+                    'level': int(tag.name[1]),
+                    'text': tag.get_text().strip()
+                })
+            
+            return {
+                'text': content_text,
+                'title': title,
+                'meta_description': meta_description,
+                'headings': headings,
+                'url': url,
+                'extraction_method': 'beautifulsoup',
+                'content_length': len(content_text),
+                'word_count': len(content_text.split())
+            }
+            
+        except Exception as e:
+            logger.error("beautifulsoup_extraction_failed", url=url, error=str(e))
+            return {'error': f'BeautifulSoup extraction failed: {str(e)}'}
+    
+    async def fetch_with_playwright(
         self,
         url: str,
         proxy: Optional[str] = None,
@@ -72,7 +161,7 @@ class ScrapingService:
         Returns:
             Tuple of (html_content, final_url)
         """
-        with sync_playwright() as p:
+        async with async_playwright() as p:
             # Configure browser launch
             launch_options = {"headless": self.headless}
             
@@ -87,30 +176,30 @@ class ScrapingService:
                         proxy=proxy_config['server']
                     )
             
-            browser = p.chromium.launch(**launch_options)
+            browser = await p.chromium.launch(**launch_options)
             
             # Create context with proxy and user agent
             context_options = {"user_agent": self.user_agent}
             if proxy_config:
                 context_options["proxy"] = proxy_config
             
-            context = browser.new_context(**context_options)
-            page = context.new_page()
+            context = await browser.new_context(**context_options)
+            page = await context.new_page()
             page.set_default_timeout(self.timeout_ms)
             
             try:
                 # Navigate to page
                 logger.info("fetching_page", url=url)
-                page.goto(url, wait_until="networkidle")
+                await page.goto(url, wait_until="networkidle")
                 
                 # Wait for specific selector if provided
                 if wait_for_selector:
-                    page.wait_for_selector(wait_for_selector, timeout=10000)
+                    await page.wait_for_selector(wait_for_selector, timeout=10000)
                 
                 # Additional wait for dynamic content
-                time.sleep(1.0)
+                await asyncio.sleep(1.0)
                 
-                html = page.content()
+                html = await page.content()
                 final_url = page.url
                 
                 logger.info(
@@ -130,8 +219,8 @@ class ScrapingService:
                 )
                 raise
             finally:
-                context.close()
-                browser.close()
+                await context.close()
+                await browser.close()
     
     def extract_content(
         self,
@@ -159,35 +248,65 @@ class ScrapingService:
         try:
             logger.info("extracting_content", url=url)
             
-            # Extract with Trafilatura
-            extracted = trafilatura.extract(
+            # Extract with Trafilatura - use text format which works reliably
+            extracted_text = trafilatura.extract(
                 html,
                 url=url,
                 include_comments=include_comments,
                 include_tables=include_tables,
                 include_images=include_images,
                 include_links=include_links,
-                output_format='json',
-                config=self.trafilatura_config,
-                with_metadata=True
+                output_format='text',
+                config=self.trafilatura_config
             )
             
-            if not extracted:
-                logger.warning("extraction_empty", url=url)
-                return {'error': 'No content extracted'}
+            # Also get metadata separately
+            metadata = trafilatura.extract_metadata(html)
+            metadata_dict = {}
+            if metadata:
+                metadata_dict = {
+                    'title': getattr(metadata, 'title', ''),
+                    'description': getattr(metadata, 'description', ''),
+                    'author': getattr(metadata, 'author', ''),
+                    'date': getattr(metadata, 'date', '')
+                }
             
-            # Parse JSON response
-            import json
-            content_data = json.loads(extracted) if isinstance(extracted, str) else extracted
+            if extracted_text and len(extracted_text.strip()) > 50:
+                # Create content data structure
+                content_data = {
+                    'text': extracted_text.strip(),
+                    'title': metadata_dict.get('title', ''),
+                    'meta_description': metadata_dict.get('description', ''),
+                    'url': url,
+                    'extraction_method': 'trafilatura',
+                    'content_length': len(extracted_text.strip()),
+                    'word_count': len(extracted_text.split())
+                }
+                
+                logger.info(
+                    "content_extracted_trafilatura",
+                    url=url,
+                    text_length=len(extracted_text),
+                    title=content_data.get('title', 'N/A')
+                )
+                return content_data
             
-            logger.info(
-                "content_extracted",
-                url=url,
-                text_length=len(content_data.get('text', '')),
-                title=content_data.get('title', 'N/A')
-            )
+            # Trafilatura failed or insufficient content, try BeautifulSoup
+            logger.info("trafilatura_failed_trying_beautifulsoup", url=url)
+            content_data = self.extract_content_with_beautifulsoup(html, url)
             
-            return content_data
+            if content_data.get('text') and len(content_data['text'].strip()) > 50:
+                logger.info(
+                    "content_extracted_beautifulsoup",
+                    url=url,
+                    text_length=len(content_data['text']),
+                    title=content_data.get('title', 'N/A')
+                )
+                return content_data
+            
+            # Both methods failed
+            logger.warning("all_extraction_methods_failed", url=url)
+            return {'error': 'No content extracted with any method'}
             
         except Exception as e:
             logger.error(
@@ -195,9 +314,13 @@ class ScrapingService:
                 url=url,
                 error=str(e)
             )
-            return {'error': str(e)}
+            # Try BeautifulSoup as last resort
+            try:
+                return self.extract_content_with_beautifulsoup(html, url)
+            except:
+                return {'error': f'All extraction methods failed: {str(e)}'}
     
-    def scrape_url(
+    async def scrape_url(
         self,
         url: str,
         use_proxy: bool = True,
@@ -226,12 +349,12 @@ class ScrapingService:
                     proxy = self.proxy_manager.get_next_proxy()
                 
                 # Fetch page with Playwright
-                html, final_url = self.fetch_with_playwright(url, proxy)
+                html, final_url = await self.fetch_with_playwright(url, proxy)
                 
                 # Extract content with Trafilatura
                 content = self.extract_content(html, final_url)
                 
-                # Add scraping metadata
+                # Add scraping metadata and raw HTML for backup
                 content['scraping_metadata'] = {
                     'original_url': url,
                     'final_url': final_url,
@@ -239,6 +362,7 @@ class ScrapingService:
                     'attempt': attempt + 1,
                     'html_length': len(html)
                 }
+                content['raw_html'] = html  # Include raw HTML for backup/audit
                 
                 return content
                 
@@ -260,7 +384,7 @@ class ScrapingService:
                 if attempt < max_retries - 1:
                     delay = retry_delay * (2 ** attempt)
                     logger.info("retrying_after_delay", delay=delay)
-                    time.sleep(delay)
+                    await asyncio.sleep(delay)
         
         # All retries failed
         logger.error(
@@ -276,7 +400,7 @@ class ScrapingService:
             'url': url
         }
     
-    def scrape_urls_batch(
+    async def scrape_urls_batch(
         self,
         urls: List[str],
         use_proxy: bool = True,
@@ -305,12 +429,12 @@ class ScrapingService:
                 url=url
             )
             
-            result = self.scrape_url(url, use_proxy=use_proxy)
+            result = await self.scrape_url(url, use_proxy=use_proxy)
             results.append(result)
             
             # Rate limiting
             if i < len(urls) - 1:
-                time.sleep(delay_between_requests)
+                await asyncio.sleep(delay_between_requests)
         
         logger.info(
             "batch_scrape_complete",

@@ -44,7 +44,7 @@ services:
     volumes:
       - ./app:/app/app
       - ./data:/app/data
-      - ./output:/app/output
+      - seo_output_data:/app/output
       - ./config:/app/config
     env_file:
       - .env
@@ -76,7 +76,7 @@ services:
     volumes:
       - ./app:/app/app
       - ./data:/app/data
-      - ./output:/app/output
+      - seo_output_data:/app/output
       - ./config:/app/config
     env_file:
       - .env
@@ -114,4 +114,5 @@ services:
 
 volumes:
   postgres_data:
+  seo_output_data:
 

@@ -1,56 +1,13 @@
 """
-Optimization services for SEO Mining.
-
-Provides hashing-based optimization engine:
-- Page hashing (NANO→MICRO→MESO→MACRO→MEGA)
-- Change detection and management
-- Score dependency tracking
-- Cached score management
-- Incremental score calculation
-- Iterative optimization loop
+Optimization Service Package
+Semantic analysis and content optimization recommendations
 """
-
-import logging
-
-logger = logging.getLogger(__name__)
+from .semantic_optimizer import SemanticOptimizer, get_semantic_optimizer
+from .content_generator import ContentGenerator, get_content_generator
+from .manual_content_manager import ManualContentManager, get_manual_content_manager
 
 __all__ = [
-    'PageHash',
-    'ChangeSet',
-    'ScoreDependencyGraph',
-    'CachedScoreManager',
-    'IncrementalCalculator',
-    'HashingOptimizer'
+    'SemanticOptimizer', 'get_semantic_optimizer',
+    'ContentGenerator', 'get_content_generator',
+    'ManualContentManager', 'get_manual_content_manager'
 ]
-
-
-# Placeholder classes for Phase 3 implementation
-class PageHash:
-    """TODO: Implement in Phase 3"""
-    pass
-
-
-class ChangeSet:
-    """TODO: Implement in Phase 3"""
-    pass
-
-
-class ScoreDependencyGraph:
-    """TODO: Implement in Phase 3"""
-    pass
-
-
-class CachedScoreManager:
-    """TODO: Implement in Phase 3"""
-    pass
-
-
-class IncrementalCalculator:
-    """TODO: Implement in Phase 3"""
-    pass
-
-
-class HashingOptimizer:
-    """TODO: Implement in Phase 3"""
-    pass
-
